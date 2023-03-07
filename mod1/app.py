@@ -10,16 +10,16 @@ def hello_world():
     return 'Привет, мир!'
 
 
+CARS = ['Chevrolet', 'Renault', 'Ford', 'Lada']
 @app.route('/cars')
 def cars():
-    cars = ['Chevrolet', 'Renault', 'Ford', 'Lada']
-    return cars
+    return CARS
 
 
+CATS = ['корниш-рекс', 'русская голубая', 'шотландская вислоухая', 'мейн-кун', 'манчкин']
 @app.route('/cats')
 def cats():
-    cats = ['корниш-рекс', 'русская голубая', 'шотландская вислоухая', 'мейн-кун', 'манчкин']
-    return choice(cats)
+    return choice(CATS)
 
 
 @app.route('/get_time/now')
@@ -31,6 +31,14 @@ def get_time_now():
 @app.route('/get_time/future')
 def get_time_future():
     return str(datetime.datetime.now() + datetime.timedelta(hours=1))
+
+
+COUNTER = 0
+@app.route('/counter')
+def counter():
+    global COUNTER
+    COUNTER += 1
+    return str(COUNTER)
 
 
 if __name__ == '__main__':
