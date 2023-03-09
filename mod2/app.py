@@ -8,13 +8,21 @@ app = Flask(__name__)
 
 @app.route("/rss/<path:file>")
 def get_summary_rss(file):
-    return 1
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    BOOK_FILE = os.path.join(BASE_DIR, file)
+
+    result = 0
+
+    with open(BOOK_FILE) as book:
+        lines = book.readlines()[1:]
+        for i in range(len(lines)):
+            line = lines[i].split()
+            result += int(line[5])
+        return str(result)
 
 
 "2"
-
-def get_mean_size():
-    return 1
+"get_mean_size.py"
 
 
 "3"
@@ -50,7 +58,8 @@ def preview(size, file):
 
 
 "7"
-storage = {
+
+STORAGE = {
     2000: {
         12: {
             1: 100,
@@ -67,35 +76,29 @@ storage = {
 
 @app.route("/add/<date>/<int:number>")
 def add(date: str, number: int):
-    global storage
+    global STORAGE
     year, month, day = datetime.strptime(date, '%Y%m%d').year, \
         datetime.strptime(date, '%Y%m%d').month, \
         datetime.strptime(date, '%Y%m%d').day
-    if storage == {} or not storage.keys() in (str(year),):
-        storage[year] = {month: {day: number}}
-    elif not storage[year].keys() in (str(month),):
-        storage[year][month] = {day: number}
-    elif not storage[year][month].keys() in (str(day),):
-        storage[year][month][day] = number
-    print(storage)
+    STORAGE.setdefault(int(date[:4]), {}).setdefault(int(date[4:6]), {}).setdefault(int(date[6:]), number)
+    print(STORAGE)
     return f'Ваша дата{year, month, day} и сумма трат за этот день({number}) записаны!'
 
 
 @app.route("/calculate/<int:year>")
 def calculate_year(year: int):
-    global storage
+    global STORAGE
     res = 0
-    m = storage.get(year)
-    for k, v in m:
-        d = k.get(v)
-        res += d.values()
-    return 1
+    for i in STORAGE[year].values():
+        for j in i.values():
+            res += j
+    return str(res)
 
 
 @app.route("/calculate/<int:year>/<int:month>")
 def calculate_month(year: int, month: int):
-    global storage
-    m = storage.get(year)
+    global STORAGE
+    m = STORAGE.get(year)
     d = m.get(month)
     res = sum(d.values())
     return str(res)
