@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 "1"
 
+
 @app.route("/rss/<path:file>")
 def get_summary_rss(file):
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -24,12 +25,11 @@ def get_summary_rss(file):
 "2"
 "get_mean_size.py"
 
-
 "3"
 "decrypt.py"
 
-
 "4"
+
 
 @app.route("/hello-world/<string:name>")
 def hello(name):
@@ -40,6 +40,7 @@ def hello(name):
 
 "5"
 
+
 @app.route("/max_number/<path:number>")
 def max_number(number):
     numbers = number.split("/")
@@ -47,6 +48,7 @@ def max_number(number):
 
 
 "6"
+
 
 @app.route("/preview/<int:size>/<path:file>")
 def preview(size, file):
@@ -58,6 +60,7 @@ def preview(size, file):
 
 
 "7"
+
 
 STORAGE = {
     2000: {
@@ -73,6 +76,7 @@ STORAGE = {
         }
     }
 }
+
 
 @app.route("/add/<date>/<int:number>")
 def add(date: str, number: int):
